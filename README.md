@@ -230,3 +230,4 @@ For issues or questions:
 2. Verify environment variables are correctly set
 3. Ensure JIRA permissions are properly configured
 4. Contact Alex Wald for DEX project access issues
+# Reverted to commit 720d3b7
