@@ -5,6 +5,49 @@ const PETSMART_PROJECT_KEY = 'DTO';
 const DEFAULT_ISSUE_TYPE = 'Epic';
 const PETSMART_ASSIGNEE_EMAIL = 'oruhland@petsmart.com';
 
+/**
+ * Convert Opal markdown to JIRA markdown format
+ * Based on: https://support.atlassian.com/jira-software-cloud/docs/markdown-and-keyboard-shortcuts/
+ */
+function convertOpalMarkdownToJira(opalMarkdown: string): string {
+  let jiraMarkdown = opalMarkdown;
+
+  // Convert action items: Opal might use different formats, convert to JIRA format []
+  // This handles various common formats like [ ] [x] - [ ] - [x] etc.
+  jiraMarkdown = jiraMarkdown.replace(/^\s*[-*]\s*\[([ x])\]\s*(.+)$/gm, (match, checked, text) => {
+    return `[] ${text}`; // JIRA uses [] for action items
+  });
+
+  // Convert emoji format if needed (Opal might use different emoji syntax)
+  // JIRA uses :emoji: format
+  jiraMarkdown = jiraMarkdown.replace(/😀|😊|😎|👍|👎|❤️|🎉|🚀|⚠️|❌|✅|📝|💡|🔧|⭐/g, (emoji) => {
+    const emojiMap: { [key: string]: string } = {
+      '😀': ':smiley:',
+      '😊': ':blush:',
+      '😎': ':sunglasses:',
+      '👍': ':thumbsup:',
+      '👎': ':thumbsdown:',
+      '❤️': ':heart:',
+      '🎉': ':tada:',
+      '🚀': ':rocket:',
+      '⚠️': ':warning:',
+      '❌': ':x:',
+      '✅': ':white_check_mark:',
+      '📝': ':memo:',
+      '💡': ':bulb:',
+      '🔧': ':wrench:',
+      '⭐': ':star:'
+    };
+    return emojiMap[emoji] || emoji;
+  });
+
+  // Ensure proper line breaks for JIRA
+  // JIRA is more sensitive to line breaks
+  jiraMarkdown = jiraMarkdown.replace(/\n\n/g, '\n\n');
+
+  return jiraMarkdown;
+}
+
 export interface CreateJiraTicketParams {
   summary: string;
   description?: string;
@@ -37,12 +80,15 @@ export async function createJiraTicket(
   }
 
   try {
+    // Convert Opal markdown to JIRA markdown format if description provided
+    const convertedDescription = description ? convertOpalMarkdownToJira(description.trim()) : undefined;
+
     // Create the JIRA ticket with hardcoded values
     const result = await jiraClient.createIssueWithText(
       PETSMART_PROJECT_KEY,
       DEFAULT_ISSUE_TYPE,
       summary.trim(),
-      description?.trim(),
+      convertedDescription,
       PETSMART_ASSIGNEE_EMAIL
     );
 
@@ -55,7 +101,7 @@ export async function createJiraTicket(
       ticketKey: result.key,
       ticketUrl: ticketUrl,
       ticketId: result.id,
-      message: `Successfully created JIRA ticket ${result.key} in DEX project. The ticket has been assigned to Alex Wald and can be viewed at ${ticketUrl}`,
+      message: `Successfully created JIRA ticket ${result.key} in Petsmart DTO project. Attempted to assign to oruhland@petsmart.com. Check the ticket to verify assignment. View at ${ticketUrl}`,
     };
   } catch (error) {
     if (error instanceof JiraClientError) {

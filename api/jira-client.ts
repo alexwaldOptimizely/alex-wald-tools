@@ -243,9 +243,10 @@ class JiraClient {
         issueData.fields.assignee = {
           accountId: user.accountId,
         };
+        console.log(`Successfully assigned ticket to ${assigneeEmail} (${user.displayName})`);
       } catch (error) {
         // If user lookup fails, we'll still create the ticket without assignee
-        console.warn(`Warning: Could not find user ${assigneeEmail}, creating ticket without assignee`);
+        console.error(`Error: Could not find user ${assigneeEmail}, creating ticket without assignee. Error:`, error);
       }
     }
 
