@@ -1,9 +1,9 @@
 import { jiraClient, JiraClientError } from './jira-client';
 
-// Hardcoded values for DEX project
-const DEX_PROJECT_KEY = 'DHK';
-const DEFAULT_ISSUE_TYPE = 'Story';
-const ALEX_WALD_EMAIL = 'alex.wald@optimizely.com';
+// Hardcoded values for Petsmart project
+const PETSMART_PROJECT_KEY = 'DTO';
+const DEFAULT_ISSUE_TYPE = 'Epic';
+const PETSMART_ASSIGNEE_EMAIL = 'oruhland@petsmart.com';
 
 export interface CreateJiraTicketParams {
   summary: string;
@@ -39,11 +39,11 @@ export async function createJiraTicket(
   try {
     // Create the JIRA ticket with hardcoded values
     const result = await jiraClient.createIssueWithText(
-      DEX_PROJECT_KEY,
+      PETSMART_PROJECT_KEY,
       DEFAULT_ISSUE_TYPE,
       summary.trim(),
       description?.trim(),
-      ALEX_WALD_EMAIL
+      PETSMART_ASSIGNEE_EMAIL
     );
 
     // Construct the ticket URL
@@ -62,19 +62,19 @@ export async function createJiraTicket(
       // Provide context-specific error messages based on status codes
       if (error.status === 400) {
         throw new Error(
-          `Failed to create JIRA ticket: Invalid request data. This could mean: 1) The DEX project (${DEX_PROJECT_KEY}) configuration has changed, 2) The Story issue type is not available, 3) Required custom fields are missing, or 4) Field values are invalid. Please contact your JIRA administrator to verify project configuration. Technical details: ${error.message}`
+          `Failed to create JIRA ticket: Invalid request data. This could mean: 1) The Petsmart project (${PETSMART_PROJECT_KEY}) configuration has changed, 2) The Epic issue type is not available, 3) Required custom fields are missing, or 4) Field values are invalid. Please contact your JIRA administrator to verify project configuration. Technical details: ${error.message}`
         );
       } else if (error.status === 401) {
         throw new Error(
-          `Authentication failed when creating JIRA ticket. The API token may be expired or invalid. Please check the JIRA_API_TOKEN environment variable and ensure it has create permissions for the DEX project. Technical details: ${error.message}`
+          `Authentication failed when creating JIRA ticket. The API token may be expired or invalid. Please check the JIRA_API_TOKEN environment variable and ensure it has create permissions for the Petsmart project. Technical details: ${error.message}`
         );
       } else if (error.status === 403) {
         throw new Error(
-          `Access denied when creating ticket in DEX project (${DEX_PROJECT_KEY}). Your account may not have permission to create Story issues in this project or assign tickets to Alex Wald. Please contact your JIRA administrator to verify permissions. Technical details: ${error.message}`
+          `Access denied when creating ticket in Petsmart project (${PETSMART_PROJECT_KEY}). Your account may not have permission to create Epic issues in this project or assign tickets to ${PETSMART_ASSIGNEE_EMAIL}. Please contact your JIRA administrator to verify permissions. Technical details: ${error.message}`
         );
       } else if (error.status === 404) {
         throw new Error(
-          `DEX project (${DEX_PROJECT_KEY}) or Story issue type not found. The project may have been moved, renamed, or you may not have access to it. Please verify the project exists and you have appropriate permissions. Technical details: ${error.message}`
+          `Petsmart project (${PETSMART_PROJECT_KEY}) or Epic issue type not found. The project may have been moved, renamed, or you may not have access to it. Please verify the project exists and you have appropriate permissions. Technical details: ${error.message}`
         );
       } else if (error.status === 429) {
         throw new Error(
@@ -115,10 +115,10 @@ export async function validateJiraConnection(): Promise<{
 
     try {
       // Try to look up Alex Wald to ensure assignee is valid
-      await jiraClient.getUserByEmail(ALEX_WALD_EMAIL);
+      await jiraClient.getUserByEmail(PETSMART_ASSIGNEE_EMAIL);
     } catch (error) {
       testResult.assigneeFound = false;
-      testResult.message += ` (Warning: Could not find user ${ALEX_WALD_EMAIL})`;
+      testResult.message += ` (Warning: Could not find user ${PETSMART_ASSIGNEE_EMAIL})`;
     }
 
     return testResult;

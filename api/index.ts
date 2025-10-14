@@ -57,12 +57,12 @@ async function createJiraTicketTool(params: CreateJiraTicketParams) {
 // Register the tool with Opal SDK
 tool({
   name: "create_jira_ticket",
-  description: `🎫 JIRA TICKET CREATOR - Create tickets in the DEX project (DHK)
+  description: `🎫 JIRA TICKET CREATOR - Create tickets in the Petsmart DTO project
 
 📋 WHAT IT DOES:
-• Creates JIRA tickets in the DEX project (project key: DHK)
-• Automatically assigns tickets to Alex Wald
-• Sets issue type to "Story"
+• Creates JIRA tickets in the Petsmart DTO project
+• Automatically assigns tickets to oruhland@petsmart.com
+• Sets issue type to "Epic"
 • Returns ticket URL for immediate access
 
 ✨ FEATURES:
@@ -87,7 +87,7 @@ tool({
 • Provides detailed error messages for troubleshooting
 
 🔗 OUTPUT:
-Returns ticket key (e.g., DHK-123), full URL, and success confirmation`,
+Returns ticket key (e.g., DTO-123), full URL, and success confirmation`,
   parameters: [
     {
       name: "summary",
@@ -154,7 +154,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Opal JIRA Tool server running on port ${PORT}`);
   console.log(`📋 Discovery endpoint: http://localhost:${PORT}/discovery`);
   console.log(`🎫 Create ticket endpoint: http://localhost:${PORT}/tools/create_jira_ticket`);
-  console.log(`💡 Project: DEX (DHK), Assignee: Alex Wald, Issue Type: Story`);
+  console.log(`💡 Project: Petsmart (DTO), Assignee: oruhland@petsmart.com, Issue Type: Epic`);
 });
 
 export default app;
