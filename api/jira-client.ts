@@ -89,12 +89,12 @@ class JiraClient {
 
   constructor() {
     this.baseUrl = process.env.JIRA_BASE_URL || '';
-    this.userEmail = process.env.JIRA_USER_EMAIL || '';
+    this.userEmail = process.env.JIRA_EMAIL || '';
     this.apiToken = process.env.JIRA_API_TOKEN || '';
 
     if (!this.baseUrl || !this.userEmail || !this.apiToken) {
       throw new Error(
-        'Missing required JIRA configuration. Please set JIRA_BASE_URL, JIRA_USER_EMAIL, and JIRA_API_TOKEN environment variables.'
+        'Missing required JIRA configuration. Please set JIRA_BASE_URL, JIRA_EMAIL, and JIRA_API_TOKEN environment variables.'
       );
     }
 
