@@ -148,17 +148,13 @@ app.use((req, res) => {
   });
 });
 
-// For local development (commented out for Vercel deployment)
-/*
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Opal JIRA Tool server running on port ${PORT}`);
-    console.log(`📋 Discovery endpoint: http://localhost:${PORT}/discovery`);
-    console.log(`🎫 Create ticket endpoint: http://localhost:${PORT}/tools/create_jira_ticket`);
-    console.log(`💡 Project: DEX (DHK), Assignee: Alex Wald, Issue Type: Story`);
-  });
-}
-*/
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Opal JIRA Tool server running on port ${PORT}`);
+  console.log(`📋 Discovery endpoint: http://localhost:${PORT}/discovery`);
+  console.log(`🎫 Create ticket endpoint: http://localhost:${PORT}/tools/create_jira_ticket`);
+  console.log(`💡 Project: DEX (DHK), Assignee: Alex Wald, Issue Type: Story`);
+});
 
 export default app;
