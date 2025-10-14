@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import axios from 'axios';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -82,7 +82,7 @@ export class JiraClientError extends Error {
 }
 
 class JiraClient {
-  private client: AxiosInstance;
+  private client: any;
   private baseUrl: string;
   private userEmail: string;
   private apiToken: string;
@@ -113,8 +113,8 @@ class JiraClient {
 
     // Add response interceptor for better error handling
     this.client.interceptors.response.use(
-      (response) => response,
-      (error: AxiosError) => {
+      (response: any) => response,
+      (error: any) => {
         if (error.response) {
           const errorData = error.response.data as any;
           const errorMessage = errorData?.message || errorData?.errorMessages?.[0] || error.message;
