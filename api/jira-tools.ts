@@ -83,12 +83,13 @@ export async function createJiraTicket(
     // Convert Opal markdown to JIRA markdown format if description provided
     const convertedDescription = description ? convertOpalMarkdownToJira(description.trim()) : undefined;
 
-    // Create the JIRA ticket with hardcoded values (no assignee)
+    // Create the JIRA ticket with hardcoded values
     const result = await jiraClient.createIssueWithText(
       PETSMART_PROJECT_KEY,
       DEFAULT_ISSUE_TYPE,
       summary.trim(),
-      convertedDescription
+      convertedDescription,
+      PETSMART_ASSIGNEE_EMAIL
     );
 
     // Construct the ticket URL
@@ -100,7 +101,7 @@ export async function createJiraTicket(
       ticketKey: result.key,
       ticketUrl: ticketUrl,
       ticketId: result.id,
-      message: `Successfully created JIRA ticket ${result.key} in Petsmart DTO project. Ticket created without assignee. View at ${ticketUrl}`,
+      message: `Successfully created JIRA ticket ${result.key} in Petsmart DTO project. Assigned to oruhland@petsmart.com. View at ${ticketUrl}`,
     };
   } catch (error) {
     if (error instanceof JiraClientError) {
