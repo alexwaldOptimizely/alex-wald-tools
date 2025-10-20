@@ -61,13 +61,14 @@ tool({
 
 📋 WHAT IT DOES:
 • Creates JIRA tickets in the Petsmart DTO project
-• Automatically assigns tickets to oruhland@petsmart.com
 • Sets issue type to "Epic"
+• Converts Opal markdown to JIRA format
 • Returns ticket URL for immediate access
 
 ✨ FEATURES:
 • Instant ticket creation with one request
-• Automatic assignee and project configuration
+• Automatic project and issue type configuration
+• Markdown conversion from Opal to JIRA format
 • Full ticket URL for easy navigation
 • Comprehensive error handling with helpful messages
 
@@ -154,7 +155,7 @@ app.listen(PORT, () => {
   console.log(`🚀 Opal JIRA Tool server running on port ${PORT}`);
   console.log(`📋 Discovery endpoint: http://localhost:${PORT}/discovery`);
   console.log(`🎫 Create ticket endpoint: http://localhost:${PORT}/tools/create_jira_ticket`);
-  console.log(`💡 Project: Petsmart (DTO), Assignee: oruhland@petsmart.com, Issue Type: Epic`);
+  console.log(`💡 Project: Petsmart (DTO), Issue Type: Epic, No Assignee`);
 });
 
 export default app;
